@@ -8,14 +8,14 @@ This course [https://github.com/ImperialCollegeLondon/rcds_statistics_foundation
 
 The sessions will have a first hour discussing basic theory, then we will navigate together through practical exercises that connect theory to real-world applications, using either `Python` or `R` with real datasets. No prior mathematical or programming experience is required to attend this course.
 
-- Data exploration 11/3
-- Descriptive statistics 18/3
-- Foundations of probability 25/3,
-- Estimation and confidence 1/4
-- Introduction to hypothesis testing (I) 15/4
-- Introduction to hypothesis testing (II) 22/4 
-- Modelling, dependency and correlation 29/4
-- Introduction to Bayesian probability 6/5
+- Data exploration - 11/03
+- Descriptive statistics - 18/03
+- Foundations of probability - 25/03
+- Estimation and confidence - 01/04
+- Introduction to hypothesis testing (I) - 15/04
+- Introduction to hypothesis testing (II) - 22/04 
+- Modelling, dependency and correlation - 29/04
+- Introduction to Bayesian probability - 06/05
 
 ## Prerequisites
 

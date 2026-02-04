@@ -1,4 +1,6 @@
-# ECRI Statistics Foundations: Lesson Plan
+# ECRI Statistics Foundations
+
+### Lesson plan
 
 ### 1. Exploration
 - Types of data
@@ -44,6 +46,3 @@
 - Bayes theorem
 - Updating a model with new evidence
 - Prior and posterior distributions
-- Where next?
-
-
