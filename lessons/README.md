@@ -43,6 +43,8 @@
 
 ### 8. Evidence
 - Frequentist vs Bayesian approaches
-- Bayes theorem
+- Bayes theorem 
 - Updating a model with new evidence
 - Prior and posterior distributions
+
+  Link to textbook: https://www.overleaf.com/project/6970b9792db867444767e06a 
