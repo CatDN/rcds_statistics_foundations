@@ -60,7 +60,7 @@ plt.title("Scatter plot: linear")
 plt.xlabel("x")
 plt.ylabel("y = f(x)")
 # plt.savefig("scatter_force_wire.png", dpi = 300, bbox_inches = "tight")
-plt.show()
+# plt.show()
 
 # Compute manual correlation and compare with Pandas implementation
 r_manual = pearson_manual(x, y)
@@ -89,7 +89,7 @@ plt.title("Scatter plot: quadratic")
 plt.xlabel("x")
 plt.ylabel("y = f(x)")
 # plt.savefig("scatter_accelerated_motion.png", dpi = 300, bbox_inches = "tight")
-plt.show()
+# plt.show()
 
 # Compute manual correlation and compare with Pandas implementation
 r_manual = pearson_manual(x, y)
@@ -118,7 +118,7 @@ plt.title("Scatter plot: sinusoidal")
 plt.xlabel("x")
 plt.ylabel("y = f(x)")
 # plt.savefig("scatter_harmonic_motion.png", dpi = 300, bbox_inches = "tight")
-plt.show()
+# plt.show()
 
 # Compute manual correlation and compare with Pandas implementation
 r_manual = pearson_manual(x, y)

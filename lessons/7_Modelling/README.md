@@ -1,6 +1,6 @@
 # ECRI Statistics Foundations
 
-### Chapter 7: Modelling
+## Chapter 7: Modelling
 
 ## Exercise 1: Correlation
 

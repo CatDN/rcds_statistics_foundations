@@ -66,7 +66,7 @@ for i, f in enumerate(files):
 
 plt.tight_layout()
 # plt.savefig("anscombe_quartet.png", dpi = 300, bbox_inches = "tight")
-plt.show()
+# plt.show()
 
 
 

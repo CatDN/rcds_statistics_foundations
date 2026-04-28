@@ -47,7 +47,7 @@ plt.title("Sinusoidal data")
 plt.xlabel("x")
 plt.ylabel("y = f(x)")
 # plt.savefig("data_to_fit.png", dpi = 300, bbox_inches = "tight")
-plt.show()
+# plt.show()
 
 
 
@@ -105,7 +105,7 @@ plt.legend()
 plt.xlabel("x")
 plt.ylabel("y = f(x)")
 # plt.savefig("data_fitted.png", dpi = 300, bbox_inches = "tight")
-plt.show()
+# plt.show()
 
 
 
