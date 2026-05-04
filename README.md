@@ -13,13 +13,13 @@ The course is organized into eight sessions, covering the topics listed below. T
 - [Significance](https://imperialcollegelondon.github.io/rcds_statistics_foundations/lessons/5_Significance/5_Significance.slides.html) (John Pinney) 15/04/2026, 15.00-17.00, SALC 6 
 - [Testing](https://imperialcollegelondon.github.io/rcds_statistics_foundations/lessons/6_Testing/6_Testing.slides.html) (John Pinney) ~~22/04/2026, 15.00-17.00, SALC 7~~ MS Teams 
 - [Modelling](https://github.com/ImperialCollegeLondon/rcds_statistics_foundations/tree/main/lessons/7_Modelling) (Jesús Urtasun) 29/04/2026, 15.00-17.00, SALC 1 
-- Evidence []() (Jesús Urtasun) 06/05/2026, 15.00-17.00, SALC 7 
+- [Evidence](https://github.com/ImperialCollegeLondon/rcds_statistics_foundations/tree/main/lessons/8_Evidence) (Jesús Urtasun) 06/05/2026, 15.00-17.00, SALC 7 
 
 ## Prerequisites
 
 Some experience with programming in Python is essential to follow this course:
 
-- [Introduction to Python for Researchers](https://www.imperial.ac.uk/students/academic-support/graduate-school/professional-development/doctoral-students/research-computing-data-science/courses/python-for-researchers/)  (or equivalent prior learning)
+- [Introduction to Python for Researchers](https://www.imperial.ac.uk/students/academic-support/graduate-school/professional-development/doctoral-students/research-computing-data-science/courses/python-for-researchers/) (or equivalent prior learning)
 
 ## Further learning
 
