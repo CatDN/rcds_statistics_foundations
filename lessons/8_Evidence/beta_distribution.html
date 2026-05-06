@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beta Distribution</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #faf8f4;
+    --fg: #1a1714;
+    --muted: #6b6560;
+    --border: #ddd8d0;
+    --accent: #2e4a7a;
+    --accent-light: #e8edf5;
+    --card: #ffffff;
+    --mono: 'JetBrains Mono', monospace;
+    --serif: 'EB Garamond', Georgia, serif;
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.75;
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  h1 {
+    font-size: 2.6rem;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.25rem;
+  }
+  h2 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    font-family: var(--mono);
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    margin: 2.5rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  p { margin-bottom: 1rem; color: var(--fg); }
+  .meta {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .formula-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.25rem 0;
+    overflow-x: auto;
+  }
+  .formula {
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 2;
+    color: var(--fg);
+  }
+  .formula .var { color: var(--accent); font-weight: 500; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    margin: 1rem 0 1.5rem;
+  }
+  th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0.75rem 0.5rem 0;
+  }
+  td {
+    padding: 0.5rem 0.75rem 0.5rem 0;
+    border-bottom: 1px solid #f0ece5;
+    vertical-align: top;
+  }
+  td:first-child { font-family: var(--mono); font-size: 13px; color: var(--accent); white-space: nowrap; }
+  .interactive-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .control-group label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    letter-spacing: 0.06em;
+  }
+  .slider-row { display: flex; align-items: center; gap: 10px; }
+  input[type=range] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+  }
+  .val {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    min-width: 32px;
+    text-align: right;
+  }
+  .stats-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .stat {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+  .stat span { color: var(--fg); font-weight: 500; }
+  .presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+  .preset-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .preset-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+  .chart-wrap { position: relative; height: 260px; }
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2.5rem;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    padding: 10px 18px;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+  .share-btn:hover { background: var(--accent); color: #fff; }
+  .share-btn svg { width: 14px; height: 14px; }
+  .copied { background: var(--accent); color: #fff; }
+  blockquote {
+    border-left: 3px solid var(--border);
+    padding-left: 1.25rem;
+    color: var(--muted);
+    font-style: italic;
+    margin: 1rem 0;
+    font-size: 16px;
+  }
+  @media (max-width: 500px) {
+    body { padding: 2rem 1.25rem 4rem; font-size: 16px; }
+    h1 { font-size: 2rem; }
+    .controls { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="eyebrow">Probability distributions</div>
+<h1>Beta distribution</h1>
+<p class="meta">Thomas Bayes · Karl Pearson · 18th–19th century &nbsp;·&nbsp; Bayesian inference, conjugate priors</p>
+
+<h2>01 · History</h2>
+<p>The Beta distribution has roots in the work of <strong>Thomas Bayes</strong> (1702–1761), whose posthumous essay introduced what we now call Bayes' theorem. Bayes implicitly used a uniform prior — equivalent to Beta(1,1) — over an unknown probability.</p>
+<p>The distribution was formally studied and named by <strong>Karl Pearson</strong> in the late 19th century as part of his systematic classification of continuous probability distributions. It belongs to what Pearson called the Type I family, defined on a bounded interval.</p>
+<blockquote>Its central role in Bayesian statistics stems from a key property: it is the conjugate prior for the binomial likelihood, meaning the posterior after observing coin tosses is again a Beta distribution.</blockquote>
+
+<h2>02 · Mathematical definition</h2>
+<p>The Beta distribution is defined for θ ∈ [0, 1] with shape parameters α, β > 0:</p>
+
+<div class="formula-block">
+  <div class="formula">
+    π(<span class="var">θ</span>; <span class="var">α</span>, <span class="var">β</span>) = <span class="var">θ</span><sup>α−1</sup> (1−<span class="var">θ</span>)<sup>β−1</sup> / B(<span class="var">α</span>, <span class="var">β</span>)
+  </div>
+  <div class="formula" style="margin-top:8px">
+    B(<span class="var">α</span>, <span class="var">β</span>) = Γ(<span class="var">α</span>)Γ(<span class="var">β</span>) / Γ(<span class="var">α</span>+<span class="var">β</span>)&nbsp;&nbsp;&nbsp;(normalising constant)
+  </div>
+</div>
+
+<table>
+  <thead><tr><th>Property</th><th>Expression</th></tr></thead>
+  <tbody>
+    <tr><td>Support</td><td>θ ∈ [0, 1]</td></tr>
+    <tr><td>Mean</td><td>α / (α + β)</td></tr>
+    <tr><td>Mode</td><td>(α − 1) / (α + β − 2) &nbsp; for α, β > 1</td></tr>
+    <tr><td>Variance</td><td>αβ / [(α+β)²(α+β+1)]</td></tr>
+    <tr><td>Conjugate to</td><td>Binomial likelihood</td></tr>
+    <tr><td>Posterior update</td><td>Beta(α+k, β+n−k) after k heads in n tosses</td></tr>
+  </tbody>
+</table>
+
+<h2>03 · Interactive plot</h2>
+
+<div class="interactive-section">
+  <div class="presets">
+    <button class="preset-btn" onclick="setP(1,1)">α=β=1 · uniform</button>
+    <button class="preset-btn" onclick="setP(0.5,0.5)">α=β=0.5 · U-shape</button>
+    <button class="preset-btn" onclick="setP(5,5)">α=β=5 · symmetric</button>
+    <button class="preset-btn" onclick="setP(2,5)">α=2, β=5 · skewed left</button>
+    <button class="preset-btn" onclick="setP(5,2)">α=5, β=2 · skewed right</button>
+    <button class="preset-btn" onclick="setP(8,4)">α=8, β=4 · coin example</button>
+  </div>
+  <div class="controls">
+    <div class="control-group">
+      <label>α (alpha) — prior heads</label>
+      <div class="slider-row">
+        <input type="range" id="sl-a" min="0.5" max="15" step="0.5" value="2">
+        <span class="val" id="v-a">2</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label>β (beta) — prior tails</label>
+      <div class="slider-row">
+        <input type="range" id="sl-b" min="0.5" max="15" step="0.5" value="2">
+        <span class="val" id="v-b">2</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat">mean <span id="st-mean">0.50</span></div>
+    <div class="stat">mode <span id="st-mode">0.50</span></div>
+    <div class="stat">variance <span id="st-var">0.042</span></div>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="bc" role="img" aria-label="Beta distribution probability density function">Beta PDF curve</canvas>
+  </div>
+</div>
+
+<h2>04 · Interpretation of parameters</h2>
+<p>Think of α and β as counts from an imaginary prior experiment: α pseudo-observations of heads, β of tails. The prior mean α/(α+β) is the fraction of heads in that imaginary experiment.</p>
+<p>After observing k real heads in n tosses, the posterior is Beta(α+k, β+n−k). The parameters simply accumulate evidence — no integration needed. This is the power of conjugacy.</p>
+
+<h2>05 · Euler Beta function vs. Beta distribution</h2>
+<p>These are two distinct objects that share a name and a formula — one is a function in mathematical analysis, the other is a probability distribution.</p>
+
+<p><strong>The Euler Beta function</strong> B(α, β) was introduced by <strong>Leonhard Euler</strong> around 1730 while studying integrals of the form ∫₀¹ t<sup>α−1</sup>(1−t)<sup>β−1</sup> dt. It arose in the context of interpolating factorials and generalising the binomial coefficient to real numbers. Its definition is:</p>
+
+<div class="formula-block">
+  <div class="formula">
+    B(<span class="var">α</span>, <span class="var">β</span>) = ∫₀¹ t<sup>α−1</sup>(1−t)<sup>β−1</sup> dt = Γ(<span class="var">α</span>)Γ(<span class="var">β</span>) / Γ(<span class="var">α</span>+<span class="var">β</span>)
+  </div>
+</div>
+
+<p>It is a <em>special function</em> — a real-valued function of two positive real numbers, with no randomness involved. Euler was interested in it purely as an object of analysis.</p>
+
+<p><strong>The Beta distribution</strong> came later, formalised by Karl Pearson in the 19th century as a probability distribution on [0,1]. Its PDF is exactly the integrand of the Beta function, divided by B(α, β) to ensure it integrates to 1:</p>
+
+<div class="formula-block">
+  <div class="formula">
+    π(<span class="var">θ</span>; <span class="var">α</span>, <span class="var">β</span>) = <span class="var">θ</span><sup>α−1</sup>(1−<span class="var">θ</span>)<sup>β−1</sup> / B(<span class="var">α</span>, <span class="var">β</span>)
+  </div>
+</div>
+
+<p>The relationship is therefore direct: the Beta function is the normalising constant of the Beta distribution. Without it, the PDF would not integrate to 1 and could not represent a probability distribution.</p>
+
+<table>
+  <thead><tr><th>·</th><th>Euler Beta function</th><th>Beta distribution</th></tr></thead>
+  <tbody>
+    <tr><td>Origin</td><td>Euler, ~1730</td><td>Pearson, ~1895</td></tr>
+    <tr><td>Purpose</td><td>Special function in analysis</td><td>Probability distribution</td></tr>
+    <tr><td>Output</td><td>A real number B(α,β)</td><td>A density over θ ∈ [0,1]</td></tr>
+    <tr><td>Role</td><td>Generalises binomial coefficients</td><td>Models unknown probabilities</td></tr>
+    <tr><td>Relation</td><td>Is the denominator of the PDF</td><td>Uses B(α,β) to normalise</td></tr>
+  </tbody>
+</table>
+
+<br>
+<button class="share-btn" id="share-btn" onclick="copyLink()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+  Copy shareable link
+</button>
+
+<script>
+function logGamma(z) {
+  const c = [76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,1.208650973866179e-3,-5.395239384953e-6];
+  let x = z, y = z, tmp = x + 5.5;
+  tmp -= (x + 0.5) * Math.log(tmp);
+  let ser = 1.000000000190015;
+  for (let j = 0; j < 6; j++) ser += c[j] / ++y;
+  return -tmp + Math.log(2.5066282746310005 * ser / x);
+}
+function betaPDF(x, a, b) {
+  if (x <= 0 || x >= 1) return 0;
+  const logB = logGamma(a) + logGamma(b) - logGamma(a + b);
+  const v = Math.exp((a-1)*Math.log(x) + (b-1)*Math.log(1-x) - logB);
+  return isFinite(v) ? v : 0;
+}
+function getData(a, b) {
+  const xs = [], ys = [];
+  for (let i = 1; i <= 199; i++) {
+    const x = i / 200;
+    xs.push(x.toFixed(3));
+    ys.push(parseFloat(betaPDF(x, a, b).toFixed(4)));
+  }
+  return { xs, ys };
+}
+let chart;
+function buildChart(a, b) {
+  const { xs, ys } = getData(a, b);
+  if (chart) {
+    chart.data.labels = xs;
+    chart.data.datasets[0].data = ys;
+    chart.update('none');
+  } else {
+    chart = new Chart(document.getElementById('bc'), {
+      type: 'line',
+      data: {
+        labels: xs,
+        datasets: [{
+          label: 'Beta PDF',
+          data: ys,
+          borderColor: '#2e4a7a',
+          backgroundColor: 'rgba(46,74,122,0.08)',
+          fill: true,
+          pointRadius: 0,
+          tension: 0.3,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { title: { display: true, text: 'θ', font: { size: 13, family: 'JetBrains Mono' } }, ticks: { maxTicksLimit: 6, font: { size: 11, family: 'JetBrains Mono' } }, grid: { color: '#f0ece5' } },
+          y: { title: { display: true, text: 'density', font: { size: 13, family: 'JetBrains Mono' } }, beginAtZero: true, ticks: { font: { size: 11, family: 'JetBrains Mono' } }, grid: { color: '#f0ece5' } }
+        }
+      }
+    });
+  }
+}
+function updateStats(a, b) {
+  const mean = a / (a + b);
+  const mode = (a > 1 && b > 1) ? ((a-1)/(a+b-2)).toFixed(3) : 'n/a';
+  const variance = (a*b) / ((a+b)*(a+b)*(a+b+1));
+  document.getElementById('st-mean').textContent = mean.toFixed(3);
+  document.getElementById('st-mode').textContent = mode;
+  document.getElementById('st-var').textContent = variance.toFixed(4);
+}
+function update() {
+  const a = parseFloat(document.getElementById('sl-a').value);
+  const b = parseFloat(document.getElementById('sl-b').value);
+  document.getElementById('v-a').textContent = a;
+  document.getElementById('v-b').textContent = b;
+  buildChart(a, b);
+  updateStats(a, b);
+  history.replaceState(null, '', '?a=' + a + '&b=' + b);
+}
+function setP(a, b) {
+  document.getElementById('sl-a').value = a;
+  document.getElementById('sl-b').value = b;
+  document.getElementById('v-a').textContent = a;
+  document.getElementById('v-b').textContent = b;
+  buildChart(a, b);
+  updateStats(a, b);
+  history.replaceState(null, '', '?a=' + a + '&b=' + b);
+}
+function copyLink() {
+  navigator.clipboard.writeText(location.href).then(() => {
+    const btn = document.getElementById('share-btn');
+    btn.textContent = 'Link copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> Copy shareable link';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+document.getElementById('sl-a').addEventListener('input', update);
+document.getElementById('sl-b').addEventListener('input', update);
+const params = new URLSearchParams(location.search);
+const initA = parseFloat(params.get('a')) || 2;
+const initB = parseFloat(params.get('b')) || 2;
+document.getElementById('sl-a').value = initA;
+document.getElementById('sl-b').value = initB;
+buildChart(initA, initB);
+updateStats(initA, initB);
+document.getElementById('v-a').textContent = initA;
+document.getElementById('v-b').textContent = initB;
+</script>
+</body>
+</html>
